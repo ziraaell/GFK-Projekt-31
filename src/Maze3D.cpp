@@ -1,15 +1,13 @@
-#include "../include/Maze3D.h"
+#include "Maze3D.h"
 #include <fstream>
 #include <vector>
 #include <string>
 #include <ctime>
 #include <cmath>
-//#include <wx/dcmemory.h>
-//#include <wx/dcclient.h>
 #include <wx/dcbuffer.h>
 #include <iostream>
 
-const int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
+int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
 const int TILE_SIZE = 5;
 const int MAP_SCALE = 1;
 const float FOV = M_PI / 3;
@@ -18,15 +16,16 @@ const float SPEED = 0.3, TURNSPEED = 0.05;
 
 Maze3D::Maze3D(const std::string& title, const std::string& file) : wxFrame(NULL, wxID_ANY, title)
 {
-	SetSize(0, 0, 800, 600);
+	SetSize(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	Center();
 
 	LoadMapFromFile(file);
     SetBackgroundStyle(wxBG_STYLE_PAINT);
-
+    Bind(wxEVT_MENU, [this](wxCommandEvent& event) {Close(true);  SCREEN_WIDTH = GetSize().GetWidth(); SCREEN_HEIGHT = GetSize().GetHeight();}, wxID_EXIT);
 	Bind(wxEVT_PAINT, &Maze3D::OnPaint, this);
 	Bind(wxEVT_KEY_DOWN, &Maze3D::OnKeyDown, this);
 	Bind(wxEVT_KEY_UP, &Maze3D::OnKeyUp, this);
+    Bind(wxEVT_SIZE, [this](wxSizeEvent& event) { this->Refresh(); }, wxID_ANY);
 	startTime = time(nullptr);
 }
 
@@ -84,6 +83,8 @@ void Maze3D::OnPaint(wxPaintEvent& event)
 
 void Maze3D::Render3D(wxDC& dc) 
 {
+    wxSize size = GetSize();
+    
 	dc.SetBrush(wxBrush(wxColour(135, 206, 235)));
 	dc.DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2);
 
@@ -91,7 +92,8 @@ void Maze3D::Render3D(wxDC& dc)
 	dc.DrawRectangle(0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2);
 
 	float rayAngle = player.angle - FOV / 2;
-	for (int ray = 0; ray < SCREEN_WIDTH; ++ray) {
+	for (int ray = 0; ray < SCREEN_WIDTH; ++ray) 
+    {
 		for (float dist = 0; dist < DEPTH; dist += 0.02) 
 		{	
 			float rayX = player.pos_x + dist * cos(rayAngle);
@@ -211,7 +213,7 @@ void Maze3D::DisplayTime()
 {
     time_t koniecCzasu = time(nullptr);
     double czas = difftime(koniecCzasu, startTime);
-    wxMessageBox("Ukoñczono labirynt w czasie: " + std::to_string(czas) + " sekund.", "Koniec gry", wxICON_INFORMATION);
+    wxMessageBox("Ukończono labirynt w czasie: " + std::to_string(czas) + " sekund.", "Koniec gry", wxICON_INFORMATION);
 }
 
-Maze3D::~Maze3D() {}
+Maze3D::~Maze3D() {
