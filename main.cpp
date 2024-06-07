@@ -5,7 +5,7 @@
 #include <string>
 #include <ctime>
 #include <cmath>
-#include "include/Maze3D.h"
+#include "Maze3D.h"
 
 class MyApp : public wxApp {
 public:
