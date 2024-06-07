@@ -134,7 +134,7 @@ void Maze3D::Render3D(wxDC& dc)
 //        }
 //    }
 //    dc.SetBrush(wxBrush(wxColour(255, 0, 0)));
-//    dc.DrawRectangle(player.GetX() / MAP_SCALE - 2, player.GetY() / MAP_SCALE - 2, 4, 4);
+//    dc.DrawRectangle(player.pos_x / MAP_SCALE - 2, player.pos_y / MAP_SCALE - 2, 4, 4);
 //}
 
 void Maze3D::OnKeyDown(wxKeyEvent& event) 
@@ -211,7 +211,7 @@ void Maze3D::DisplayTime()
 {
     time_t koniecCzasu = time(nullptr);
     double czas = difftime(koniecCzasu, startTime);
-    wxMessageBox("Ukoñczono labirynt w czasie: " + std::to_string(czas) + " sekund.", "Koniec gry", wxICON_INFORMATION);
+    wxMessageBox("UkoÃ±czono labirynt w czasie: " + std::to_string(czas) + " sekund.", "Koniec gry", wxICON_INFORMATION);
 }
 
 Maze3D::~Maze3D() {}
