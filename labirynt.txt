@@ -1,7 +1,6 @@
 7,5
 XXXXXEX
-X XX  X
+XsXX  X
 X  X XX
-X s   X
+X    X
 XXXXXXX 
-

@@ -11,7 +11,7 @@ public:
     void LoadMapFromFile(const std::string& filename);
     void OnPaint(wxPaintEvent& event);
     void Render3D(wxDC& dc);
-    //void RenderMap(wxDC& dc);
+    void RenderMap(wxDC& dc);
     void OnKeyDown(wxKeyEvent& event);
     void OnKeyUp(wxKeyEvent& event);
     void HandleMovement();
@@ -26,4 +26,10 @@ private:
     Player player;
     time_t startTime;
     bool gameEnded = false;
+    bool FPP = true;
+
+    enum {
+        ID_1 = 1001,
+        ID_2 = 1002,
+    };
 };
