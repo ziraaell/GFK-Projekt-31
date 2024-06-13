@@ -1,3 +1,7 @@
+/**
+ * @file Maze3D.cpp
+ * @brief Implementacja klasy Maze3D, która obsługuje renderowanie i interakcję z labiryntem.
+ */
 #include "Maze3D.h"
 #include <fstream>
 #include <vector>
@@ -12,6 +16,12 @@ const int TILE_SIZE = 5;
 const float FOV = M_PI / 2;
 const float DEPTH = 50.0;
 const float SPEED = 0.3, TURNSPEED = 0.05;
+
+/**
+ * @brief Konstruktor klasy Maze3D.
+ * @param title Tytuł okna aplikacji.
+ * @param file Nazwa pliku, z którego wczytywany jest labirynt.
+ */
 
 Maze3D::Maze3D(const std::string& title, const std::string& file) : wxFrame(NULL, wxID_ANY, title)
 {
@@ -39,7 +49,10 @@ Maze3D::Maze3D(const std::string& title, const std::string& file) : wxFrame(NULL
     startTime = time(nullptr);
 }
 
-
+/**
+ * @brief Wczytuje mapę labiryntu z pliku.
+ * @param filename Ścieżka do pliku zawierającego definicję labiryntu.
+ */
 void Maze3D::LoadMapFromFile(const std::string& filename) {
     std::string line;
     std::vector<std::string> out;
@@ -85,6 +98,10 @@ void Maze3D::LoadMapFromFile(const std::string& filename) {
     }
 }
 
+/**
+ * @brief Obsługuje zdarzenie rysowania, renderując widok 3D lub mapę w zależności od trybu.
+ * @param event Obiekt zdarzenia malowania.
+ */
 void Maze3D::OnPaint(wxPaintEvent& event)
 {
     wxAutoBufferedPaintDC dc(this);
@@ -92,6 +109,10 @@ void Maze3D::OnPaint(wxPaintEvent& event)
     else RenderMap(dc);
 }
 
+/**
+ * @brief Renderuje projekcję 3D labiryntu.
+ * @param dc Kontekst urządzenia używany do rysowania.
+ */
 void Maze3D::Render3D(wxDC& dc)
 {
 
@@ -136,7 +157,10 @@ void Maze3D::Render3D(wxDC& dc)
     }
 }
 
-
+/**
+ * @brief Renderuje widok mapy z góry.
+ * @param dc Kontekst urządzenia używany do rysowania.
+ */
 void Maze3D::RenderMap(wxDC& dc)
 {
     int tileWidth = SCREEN_WIDTH / width;
@@ -199,7 +223,10 @@ void Maze3D::RenderMap(wxDC& dc)
     //-------------------------------------------------------------------------------------------  
 }
 
-
+/**
+ * @brief Obsługuje zdarzenie naciśnięcia klawisza.
+ * @param event Obiekt zdarzenia klawiatury.
+ */
 void Maze3D::OnKeyDown(wxKeyEvent& event)
 {
     switch (event.GetKeyCode())
@@ -214,6 +241,10 @@ void Maze3D::OnKeyDown(wxKeyEvent& event)
     Refresh();
 }
 
+/**
+ * @brief Obsługuje zdarzenie zwolnienia klawisza.
+ * @param event Obiekt zdarzenia klawiatury.
+ */
 void Maze3D::OnKeyUp(wxKeyEvent& event)
 {
     switch (event.GetKeyCode()) {
@@ -227,6 +258,9 @@ void Maze3D::OnKeyUp(wxKeyEvent& event)
     Refresh();
 }
 
+/**
+ * @brief Obsługuje ruch postaci.
+ */
 void Maze3D::HandleMovement()
 {
     float moveStep = player.speed * (shiftPressed ? 2 : 1);
@@ -270,12 +304,18 @@ void Maze3D::HandleMovement()
     }
 }
 
+/**
+ * @brief Wyświetla czas ukończenia gry.
+ */
 void Maze3D::DisplayTime()
 {
     time_t koniecCzasu = time(nullptr);
     double czas = difftime(koniecCzasu, startTime);
-    wxMessageBox("Uko�czono labirynt w czasie: " + std::to_string(czas) + " sekund.", "Koniec gry", wxICON_INFORMATION);
+    wxMessageBox("Uko�czono labirynt w czasie: " + std::to_string(czas) + " sekund.", "Koniec gry", wxICON_INFORMATION);
     exit(1);
 }
 
+/**
+ * @brief Destruktor klasy Maze3D.
+ */
 Maze3D::~Maze3D() {}
